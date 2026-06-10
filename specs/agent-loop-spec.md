@@ -100,12 +100,19 @@ messages.append(assistant_message)  # must come first
 
 For each tool call, extract the name and arguments, call `dispatch_tool()`, and
 append the result as a `"tool"` role message. The `tool_call_id` links this result
-back to the specific tool call that requested it:
+back to the specific tool call that requested it.
+
+⚠️ For a no-argument tool call (like `get_seasonal_conditions` with no season),
+the model may send `arguments` as the JSON string `"null"` — `json.loads` turns
+that into `None`, not `{}`. Normalize before dispatching:
 
 ```python
 for tool_call in assistant_message.tool_calls:
     tool_name = tool_call.function.name
-    tool_args = json.loads(tool_call.function.arguments)
+    raw_args = tool_call.function.arguments
+    tool_args = json.loads(raw_args) if raw_args else {}
+    if not isinstance(tool_args, dict):
+        tool_args = {}
     tool_result = dispatch_tool(tool_name, tool_args)
 
     messages.append({

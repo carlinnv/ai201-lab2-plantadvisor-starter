@@ -85,6 +85,10 @@ SYSTEM_PROMPT = (
 
 def dispatch_tool(tool_name: str, tool_args: dict) -> str:
     """Route a tool call to the correct function and return the result as a JSON string."""
+    # Some models send arguments as JSON "null" for no-argument tools, which
+    # json.loads() turns into None — normalize so .get() below is always safe.
+    if not isinstance(tool_args, dict):
+        tool_args = {}
     print(f"  → Tool call: {tool_name}({tool_args})")
     if tool_name == "lookup_plant":
         result = lookup_plant(tool_args["plant_name"])
