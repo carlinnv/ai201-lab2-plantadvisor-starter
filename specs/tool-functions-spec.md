@@ -73,7 +73,7 @@ the broadest net, so they go last.
 *Aliases are stored as a list of strings. How will you check if the normalized input matches any alias in the list? Write your approach in pseudocode or plain English.*
 
 ```
-[your answer here]
+To make sure that the alias lookup stays efficient for a database of thousands of plants, we will make a function that builds an inverted index of all of the plants. From this dictionary, we will be able to look up user input in this dictionary and get the primary name of the plant
 ```
 
 ---
@@ -83,7 +83,7 @@ the broadest net, so they go last.
 *When a plant isn't found, the agent will read your message and use it to decide what to tell the user. Write the exact string you'll return — make it useful to the agent, not just to a human reading logs.*
 
 ```
-[your answer here]
+Return the string "[plant_name] not found. Try its scientific name or any aliases." Replace [plant_name] with the user's inputted string.  
 ```
 
 ---
@@ -94,7 +94,7 @@ the broadest net, so they go last.
 
 **Test: does `"devil's ivy"` return the pothos entry?**
 ```
-[yes / no — if no, describe what happened]
+Yes
 ```
 
 **Test: does `"SNAKE PLANT"` return the snake plant entry?**
@@ -104,7 +104,7 @@ the broadest net, so they go last.
 
 **One edge case you discovered while implementing:**
 ```
-[your answer here]
+If the user forgets to include an apostrophe (e.g. instead of writing "devil's ivy", they write "devils ivy"), the function will not return the appropriate result. Right now, the lookup function does not account for grammar mistakes or close searches like those.
 ```
 
 ---
